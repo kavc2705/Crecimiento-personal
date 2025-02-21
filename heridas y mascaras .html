@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Las 5 Heridas y sus Máscaras</title>
+    
+    <!-- React y ReactDOM desde CDN -->
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        .card-container {
+            width: 256px;
+            height: 384px;
+            perspective: 1000px;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-face.back {
+            transform: rotateY(180deg);
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function Presentation() {
+            const [flippedCards, setFlippedCards] = useState({});
+
+            const cards = [
+                {
+                    id: 1,
+                    front: {
+                        title: "Herida 1",
+                        bgColor: "bg-rose-50",
+                        numberColor: "bg-rose-200"
+                    },
+                    back: {
+                        title: "Rechazo",
+                        message: "Máscara: Huidiz@",
+                        bgColor: "bg-rose-100",
+                        textColor: "text-rose-800",
+                        numberColor: "bg-rose-600"
+                    }
+                },
+                {
+                    id: 2,
+                    front: {
+                        title: "Herida 2",
+                        bgColor: "bg-purple-50",
+                        numberColor: "bg-purple-200"
+                    },
+                    back: {
+                        title: "Abandono",
+                        message: "Máscara: Dependiente",
+                        bgColor: "bg-purple-100",
+                        textColor: "text-purple-800",
+                        numberColor: "bg-purple-600"
+                    }
+                },
+                {
+                    id: 3,
+                    front: {
+                        title: "Herida 3",
+                        bgColor: "bg-indigo-100",
+                        numberColor: "bg-indigo-300"
+                    },
+                    back: {
+                        title: "Humillación",
+                        message: "Máscara: Masoquista",
+                        bgColor: "bg-indigo-200",
+                        textColor: "text-indigo-900",
+                        numberColor: "bg-indigo-700"
+                    }
+                },
+                {
+                    id: 4,
+                    front: {
+                        title: "Herida 4",
+                        bgColor: "bg-teal-50",
+                        numberColor: "bg-teal-200"
+                    },
+                    back: {
+                        title: "Traición",
+                        message: "Máscara: Controlad@r",
+                        bgColor: "bg-teal-100",
+                        textColor: "text-teal-800",
+                        numberColor: "bg-teal-600"
+                    }
+                },
+                {
+                    id: 5,
+                    front: {
+                        title: "Herida 5",
+                        bgColor: "bg-orange-100",
+                        numberColor: "bg-orange-300"
+                    },
+                    back: {
+                        title: "Injusticia",
+                        message: "Máscara: Rigid@",
+                        bgColor: "bg-orange-200",
+                        textColor: "text-orange-900",
+                        numberColor: "bg-orange-700"
+                    }
+                }
+            ];
+
+            const handleFlip = (cardId) => {
+                setFlippedCards(prev => ({
+                    ...prev,
+                    [cardId]: !prev[cardId]
+                }));
+            };
+
+            return (
+                <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-8">
+                    <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">
+                        Las 5 Heridas y sus Máscaras
+                    </h1>
+                    
+                    <div className="flex flex-nowrap gap-4 overflow-x-auto py-4 px-2 justify-center min-h-[450px] items-center">
+                        {cards.map((card) => (
+                            <div key={card.id} className="card-container">
+                                <div 
+                                    className={`card ${flippedCards[card.id] ? 'flipped' : ''}`}
+                                    onClick={() => handleFlip(card.id)}
+                                >
+                                    <div className={`card-face front ${card.front.bgColor} p-6 flex flex-col items-center justify-center`}>
+                                        <div className={`absolute top-4 left-4 w-8 h-8 rounded-full ${card.front.numberColor} flex items-center justify-center text-gray-700 font-bold`}>
+                                            {card.id}
+                                        </div>
+                                        <div className="text-center">
+                                            <h2 className="text-3xl font-bold mb-4 text-gray-700">{card.front.title}</h2>
+                                        </div>
+                                    </div>
+                                    <div className={`card-face back ${card.back.bgColor} p-6 flex flex-col items-center justify-center`}>
+                                        <div className={`absolute top-4 left-4 w-8 h-8 rounded-full ${card.back.numberColor} flex items-center justify-center text-white font-bold`}>
+                                            {card.id}
+                                        </div>
+                                        <div className="text-center">
+                                            <h2 className={`text-2xl font-bold mb-4 ${card.back.textColor}`}>{card.back.title}</h2>
+                                            <p className={`text-lg font-medium ${card.back.textColor}`}>{card.back.message}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<Presentation />, document.getElementById('root'));
+    </script>
+</body>
+</html>
